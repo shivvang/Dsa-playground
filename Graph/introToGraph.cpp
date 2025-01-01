@@ -1,159 +1,295 @@
-// 📚 Graph 
-// Graph: A collection of nodes (vertices) connected by edges.
+// 📚 Graph Representation in DSA
+// When working with graphs, the input is often provided in a structured way, and there are two main ways to represent graphs in programming:
 
-// Nodes (Vertices): Fundamental units, represented as V.
+// Adjacency Matrix
+// Adjacency List
+// Let’s start step-by-step:
 
-// Edges: Connections between nodes, represented as E.
+// 📝 1. Graph Input Format
+// Typically, the input for a graph includes:
 
-// Graph Representation:
+// Number of Vertices (V) – Total nodes in the graph.
+// Number of Edges (E) – Total connections between nodes.
 
-// Adjacency Matrix (2D Array)
-// Adjacency List (Array of Linked Lists/Arrays)
+// Edges – Each edge specifies:
+// Source node
+// Destination node
+// (Optional) Weight (for weighted graphs)
 
-// Notation:  𝐺 = (𝑉,𝐸 )
-// G=(V,E)
+// 🔑 Example Input (Undirected Graph)
+// 5 6  // 5 vertices, 6 edges
+// 1 2
+// 1 3
+// 2 4
+// 2 5
+// 3 5
+// 4 5
+
+// 🔑 Example Input (Directed Weighted Graph)
+
+// 4 4  // 4 vertices, 4 edges
+// 1 2 5
+// 1 3 3
+// 2 4 2
+// 3 4 4
 
 
-// Example:
 
-// Graph Representation (Adjacency List):
+// 🛠️ 2. Graph Representation Methods
 
-// A -> B, C  
-// B -> A, D  
-// C -> A, D  
-// D -> B, C  
+// 📊 A. Adjacency Matrix
+
+// A 2D Array of size  𝑉 × 𝑉
+// V×V (where V = number of vertices).
+
+// Matrix[i][j] = 1 (or weight) if there is an edge from i to j.
+
+// Otherwise, Matrix[i][j] = 0.
+
+// Example (Undirected Graph with 4 Vertices):
 
 
-// 🛠️ Components of a Graph
+// Graph:
 
-// Vertex (Node): Fundamental unit (e.g., A, B, C).
+// 1 — 2
+// |   |
+// 3 — 4
 
-// Edge: Connects two vertices (e.g., A—B).
+// Adjacency Matrix: (its size is always nodees+1 * edges+1)
 
-// Degree: Number of edges connected to a vertex.
+//    1 2 3 4
+// 1 [0 1 1 0]
+// 2 [1 0 1 1]
+// 3 [1 1 0 1]
+// 4 [0 1 1 0]
 
-        // In an undirected graph, the degree of a vertex (or node) is defined as:
+// Code Example (Adjacency Matrix in C++):
 
-        // 📌 Degree of a Vertex:
-        // The number of edges connected to that vertex.
-        // Each edge contributes 1 to the degree of a vertex.
-        // Example:
 
-        // mathematica
+// int graph[4][4] = {
+//     {0, 1, 1, 0},
+//     {1, 0, 1, 1},
+//     {1, 1, 0, 1},
+//     {0, 1, 1, 0}
+// };
 
-        //    A — B — C
-        //    |     |
-        //    D     E
+
+//and if it was weighted undirected graph then we would replace 1's with weights
+
+
+// 📊 Directed Graph Representation using Adjacency Matrix
+
+// In a directed graph, edges have a direction (from one vertex to another). The Adjacency Matrix represents this using a 2D array where:
+
+// Matrix[i][j] = 1 (or weight) → An edge exists from vertex i to vertex j.
+
+// Matrix[i][j] = 0 → No edge exists from vertex i to vertex j.
+
+// 📝 Example Directed Graph
+
+//     (1) → (2)
+//      ↓     ↑
+//     (3) → (4)
+
+// 📊 Adjacency Matrix Representation
+// 1	2	3	4
+// 1	0	1	1	0
+// 2	0	0	0	1
+// 3	0	0	0	1
+// 4	0	1	0	0
+
+// 🧠 Explanation:
+// (1 → 2) → Matrix[1][2] = 1
+// (1 → 3) → Matrix[1][3] = 1
+// (2 → 4) → Matrix[2][4] = 1
+// (3 → 4) → Matrix[3][4] = 1
+// (4 → 2) → Matrix[4][2] = 1
+
+// All other entries are 0, as no other edges exist.
+
+
+// ✅ Pros:
+
+// Easy to understand and implement.
+// Fast to check if an edge exists between two nodes.
+// ❌ Cons:
+
+// Uses O(V²) memory, inefficient for sparse graphs.
+// Adding/removing edges is expensive.
+
+
+// 📋 B. Adjacency List
+
+// Each vertex maintains a list of adjacent vertices.
+
+// Efficient for sparse graphs.
+
+// Can use Array of Vectors or Map of Lists in C++.
+
+// Example (Undirected Graph with 4 Vertices):
+
+// Graph:
+// 1 — 2
+// |   |
+// 3 — 4
+
+// Adjacency List:
+// 1 -> 2, 3
+// 2 -> 1, 3, 4
+// 3 -> 1, 2, 4
+// 4 -> 2, 3
+
+
+// 📚 Directed Graph Representation using Adjacency List (Unweighted)
+// In a directed graph, edges have a specific direction (from one vertex to another).
+// The Adjacency List stores each vertex and a list of vertices it points to.
+
+// 📝 Example Directed Graph (Unweighted)
+
+//     (1) → (2)
+//      ↓     ↓ 
+//     (3) → (4)
+// 📋 Adjacency List Representation
+
+// 1 → 2, 3  
+// 2 → 4  
+// 3 → 4  
+// 4 → (empty)
+
+// 🧠 Explanation:
+// 1 → 2 → Vertex 1 points to Vertex 2.
+// 1 → 3 → Vertex 1 points to Vertex 3.
+// 2 → 4 → Vertex 2 points to Vertex 4.
+// 3 → 4 → Vertex 3 points to Vertex 4.
+
+// Vertex 4 has no outgoing edges.
+
+// ✅ Pros:
+
+// Space-efficient, uses O(2 * E) memory.
+// Adding/removing edges is easy.
+
+// ❌ Cons:
+
+// Checking if an edge exists between two nodes takes longer.
+
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+
+int main(){
+    // n represent no of nodes
+    // m represent no of edges
+
+    int n , m;
+
+   //📚 Graph Representation: Adjacency Matrix & Adjacency List (Weighted and Unweighted)
+
+         //    📊 1. Adjacency Matrix Representation
+
+        //    ✅ Undirected Graph (Unweighted)
+
+        int adjMatrix[n+1][n+1] = {0}; // Initialize matrix with 0
+
+        for (int i = 0; i < m; i++) {
+            int u, v;
+            cin >> u >> v; // Input edge (u, v)
+            adjMatrix[u][v] = 1;
+            adjMatrix[v][u] = 1; // Since it's undirected
+        }
+
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(n²)
+
+        // ✅ Directed Graph (Unweighted)
+
+        for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v; // Input edge (u → v)
+        adjMatrix[u][v] = 1;
+        }
+
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(n²)
+
+        //✅ Undirected Graph (Weighted)
+
+        int adjMatrix[n+1][n+1] = {0}; // Initialize matrix with 0
+
+        for (int i = 0; i < m; i++) {
+            int u, v, weight;
+            cin >> u >> v >> weight; // Input edge (u, v) with weight
+            adjMatrix[u][v] = weight;
+            adjMatrix[v][u] = weight; // Since it's undirected
+        }
+
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(n²)
+
+        //✅ Directed Graph (Weighted)
+
+        int adjMatrix[n+1][n+1] = {0}; // Initialize matrix with 0
+
+        for (int i = 0; i < m; i++) {
+            int u, v, weight;
+            cin >> u >> v >> weight; // Input edge (u → v) with weight
+            adjMatrix[u][v] = weight;
+        }
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(n²) 
+
+
+        //📋 2. Adjacency List Representation
         
-        // Degree of A: 2 (Connected to B and D)
-        // Degree of B: 3 (Connected to A, C, and E)
-        // Degree of C: 1 (Connected to B)
+        //✅ Undirected Graph (Unweighted)
 
-        // 🧠 Key Points About Degree in Undirected Graphs:
+        vector<int> adjList[n+1];
 
-        // The sum of degrees of all vertices is always twice the number of edges:(important)
+        for (int i = 0; i < m; i++) {
+            int u, v;
+            cin >> u >> v; // Input edge (u, v)
+            adjList[u].push_back(v);
+            adjList[v].push_back(u); // Since it's undirected
+        }
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(2E) ≈ O(E)
 
-        //total degree of graph = 2 * No Of Edges
-        // Σ(degreeofallvertices)=2∗∣E∣
-
-        // A vertex with degree 0 is called an isolated vertex.
-
-
-        // In a directed graph, each edge has a direction, and we calculate in-degree and out-degree separately for each vertex.
-
-        // 📌 In-Degree and Out-Degree in Directed Graphs
-
-        // In-Degree:
-
-        // The number of incoming edges to a vertex.
-        // Edges pointing towards the vertex.
-
-        // Out-Degree:
-
-        // The number of outgoing edges from a vertex.
-        // Edges pointing away from the vertex.
-
-        // 📝 Key Difference:
-        // In in-degree, we count edges arriving at the vertex.
-        // In out-degree, we count edges leaving the vertex.
-
-        // 🧠 Mathematical Property:
-        // For a directed graph:
-
-   
-        // Σ(In-Degree of all vertices)=Σ(Out-Degree of all vertices)=∣E∣
-
-        // Where |E| is the total number of edges.
+        // ✅ Directed Graph (Unweighted)
 
 
-        //🧩 Example of In-Degree and Out-Degree
-        // mathematica
-        // Copy code
-        //     A → B → C
-        //     ↑   ↓
-        //     D ← E
-        // In-Degree:
+        for (int i = 0; i < m; i++) {
+            int u, v;
+            cin >> u >> v; // Input edge (u → v)
+            adjList[u].push_back(v);
+        }
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(E)
 
-        // A: 0
-        // B: 2 (From A and E)
-        // C: 1 (From B)
-        // D: 1 (From E)
-        // E: 1 (From B)
-        // Out-Degree:
+        //✅ Undirected Graph (Weighted)
 
-        // A: 1 (To B)
-        // B: 2 (To C and E)
-        // C: 0
-        // D: 1 (To A)
-        // E: 1 (To D)
+        vector<pair<int, int>> adjListt[n+1];
 
+        for (int i = 0; i < m; i++) {
+            int u, v, weight;
+            cin >> u >> v >> weight; // Input edge (u, v) with weight
+            adjListt[u].push_back({v, weight});
+            adjListt[v].push_back({u, weight}); // Since it's undirected
+        }
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(2E) ≈ O(E)
 
+        //✅ Directed Graph (Weighted)
 
-// Path: Sequence of edges connecting vertices.(a node cannot appear twice in a path)
+        for (int i = 0; i < m; i++) {
+            int u, v, weight;
+            cin >> u >> v >> weight; // Input edge (u → v) with weight
+            adjListt[u].push_back({v, weight});
+        }
 
-// Cycle: A path that starts and ends at the same vertex.
+        // Time Complexity: O(1) per edge insertion.
+        // Space Complexity: O(E)
 
-// Connected Graph: All vertices are connected by edges.
-
-// Disconnected Graph: Some vertices are not connected.
-
-
-
-// 🔄 Types of Graphs
-
-// Type	Description	Example
-
-// Directed	Edges have direction (→)	A → B
-
-// Undirected	Edges have no direction (—)	A — B
-
-// Weighted	Edges have weights (costs)	A —5— B
-
-// Unweighted	Edges have no weights	A — B
-
-// Cyclic	Contains cycles	A → B → A
-
-// Acyclic	No cycles	A → B → C
-
-// Connected	All vertices are reachable	Graph (All connected)
-
-// Disconnected	Some vertices are unreachable	Graph (Isolated nodes)
-
-// Tree	Acyclic connected graph	Binary Tree
-
-// Bipartite	Vertices can be divided into 2 sets	Two groups
-
-
-// ⚙️ Graph Terminologies
-
-// Adjacency: Two vertices connected by an edge are adjacent.
-
-// Incidence: Edge is incident on its connected vertices.
-
-// Isolated Vertex: Vertex with no edges.
-
-// Complete Graph: Every vertex is connected to every other vertex.
-
-// Subgraph: Part of a graph.
-
-//with images for better understanding :- https://www.javatpoint.com/types-of-graph-in-data-structure
+    return 0;
+}
